@@ -3,8 +3,8 @@ head
   meta(charset='utf-8')
   meta(name='viewport' content='width=device-width, initial-scale=1')
   title AutoMUKit API testing WUI
-  link(rel='stylesheet' href=`${baseUrl}styles.css`)
-  script(src=`${baseUrl}scripts.js` type='application/javascript')
+  link(rel='stylesheet' href=`${baseUrl !== '/' ? baseUrl : ''}/styles.css`)
+  script(src=`${baseUrl !== '/' ? baseUrl : ''}/scripts.js` type='application/javascript')
 h1 AutoMUKit web user interface
 #container
   .block
