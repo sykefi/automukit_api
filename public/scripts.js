@@ -1,8 +1,4 @@
-const calculateResults = () => {
-  postData()
-}
-
-const postData = () => {
+const calculateResults = (url) => {
   const config = {
     method: 'POST',
     headers: {
@@ -11,7 +7,7 @@ const postData = () => {
     body: JSON.stringify(resolveInput())
   }
   document.getElementById('inputJsonContent').innerHTML = JSON.stringify(resolveInput(), null, 2)
-  fetch('/', config).then(async (response) => {
+  fetch(url, config).then(async (response) => {
     const result = await response.json()
     const container = document.getElementById('resultsContainer')
     document.getElementById('outputJsonContent').innerHTML = JSON.stringify(result, null, 2)

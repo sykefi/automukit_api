@@ -37,4 +37,4 @@ You will need node & npm installed in your environment.
 ## Running in production (using flock and cron)
 
     $ crontab -e
-    $ * * * * *       cd /path/to/automukit_api && ./start.sh 
+    * * * * *       cd /path/to/automukit_api && ./start.sh 
