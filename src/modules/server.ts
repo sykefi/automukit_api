@@ -21,6 +21,10 @@ export default class Server {
     console.log(`${date.toJSON()} - Starting AutoMUKit API server...`)
     const app = express()
     app.use(express.json())
+    app.set('view engine', 'pug')
+    app.get('/', function (req, res) {
+      res.render('index', { baseUrl: process.env.BASE_URL })
+    })
     app.use(express.static('public'))
     app.post('/', this.handlePost.bind(this))
     const port = process.env.SERVER_PORT

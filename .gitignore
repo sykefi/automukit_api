@@ -9,5 +9,5 @@ node_modules/
 # TypeScript -> JavaScript build
 build/
 
-# Local ENV overrides
-.env.local
+# ENV variables
+.envryrey

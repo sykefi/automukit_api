@@ -1,0 +1,61 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  title AutoMUKit API testing WUI
+  link(rel='stylesheet' href=`${baseUrl}styles.css`)
+  script(src=`${baseUrl}scripts.js` type='application/javascript')
+h1 AutoMUKit web user interface
+#container
+  .block
+    h2 Measurements
+    label
+      | Data
+      textarea#measurementData(onpaste='formatTextareaData(event)' placeholder='paste columns from spreadsheet')
+  .block
+    h2 References
+    .referenceContainer
+      label
+        | Value
+        input(type='number' name='referenceValue')
+      label
+        | Uncertainty
+        input(type='number' name='referenceUncertainty')
+      label
+        | Data
+        textarea.referenceData(name='referenceData' onpaste='formatTextareaData(event)' placeholder='paste a column from spreadsheet')
+      button.removeButton(onclick='removeElement(this)') Remove
+      hr
+    button(onclick='addElement(this)') Add reference
+  .block
+    h2 Ranges
+    .rangeContainer
+      label
+        | Mode
+        select(name='rangeMode')
+          option relative
+          option absolute
+      label
+        | Min
+        input(type='number' name='rangeMin')
+      label
+        | Max
+        input(type='number' name='rangeMax')
+      label
+        | Coverage factor K
+        input(type='number' name='rangeCoverageFactor')
+      button.removeButton(onclick='removeElement(this)') Remove
+      hr
+    button(onclick='addElement(this)') Add range
+  .block
+    h2 Results
+    #resultsContainer
+    button(onclick='calculateResults()') Calculate
+hr
+#inputJson
+  h3 Request JSON
+  #inputJsonContent
+#outputJson
+  h3 Response JSON
+  #outputJsonContent
+button.toggleJSONButton(onclick='toggleJSON()') Show / hide JSON
