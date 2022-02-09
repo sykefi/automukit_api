@@ -1,0 +1,90 @@
+html {
+    font-family: sans-serif;
+}
+
+body {
+    margin: 20px;
+    background-color: #caf0f5;
+    background-image: linear-gradient(#d4faff,#caf0f5);
+    background-repeat: repeat-x;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.block {
+    flex-grow: 1;
+}
+
+label {
+    display: block;
+}
+
+input {
+    display: block;
+}
+
+textarea {
+    display: block;
+}
+
+select {
+    display: block;
+}
+
+#measurementData {
+    min-height: 400px;
+    width: 90%;
+}
+
+.referenceData {
+    min-height: 200px;
+    width: 50%;
+}
+
+.removeButton {
+    margin-top: 10px;
+}
+
+.error {
+    border: solid 1px #660000;
+    background-color: #ffa2a2;
+    color: #660000;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.result {
+    border: solid 1px #1b5b00;
+    background-color: #aed999;
+    color: #1b5b00;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+hr {
+    width: 90%;
+}
+
+.resultValues, .rangeValues {
+    margin-bottom: 10px;
+}
+
+.resultValues {
+    font-weight: bold;
+}
+
+.removeButton {
+    display: none;
+}
+
+.toggleJSONButton {
+    margin-top: 20px;
+}
+
+#inputJson, #outputJson {
+    display: none;
+}

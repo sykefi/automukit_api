@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express'
 import * as http from 'http'
 import MUKit from './mukit'
@@ -16,13 +17,15 @@ export default class Server {
   }
 
   start(): http.Server {
-    console.log('Starting AutoMUKit server')
+    const date = new Date()
+    console.log(`${date.toJSON()} - Starting AutoMUKit API server...`)
     const app = express()
     app.use(express.json())
     app.use(express.static('public'))
     app.post('/', this.handlePost.bind(this))
-    this.server = app.listen(3030, () => {
-      console.log('Listening on port 3030')
+    const port = process.env.SERVER_PORT
+    this.server = app.listen(port, () => {
+      console.log(`Listening on port ${port}`)
     })
     return this.server
   }

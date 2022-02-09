@@ -25,6 +25,7 @@
   },
   "homepage": "https://bitbucket.org/sykecloud/automukit_api#readme",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "mathjs": "^10.1.1"
   },

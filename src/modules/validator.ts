@@ -62,9 +62,6 @@ export default class Validator {
     if (range.max < range.min) {
       errors.push('Range max is lesser than min')
     }
-    if (range.max < range.min) {
-      errors.push('Range max is lesser than min')
-    }
     return errors
   }
 

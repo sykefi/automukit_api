@@ -5,8 +5,82 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AutoMUKit API testing WUI</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" type="application/javascript"></script>
   </head>
   <body>
-    <h1>Under construction</h1>
+    <h1>AutoMUKit web user interface</h1>
+    <div id="container">
+      <div class="block">
+        <h2>Measurements</h2>
+        <label>
+          Data
+          <textarea id="measurementData" onpaste="formatTextareaData(event)" placeholder="paste columns from spreadsheet"></textarea>
+        </label>
+      </div>
+      <div class="block">
+        <h2>References</h2>
+        <div class="referenceContainer">
+          <label>
+            Value
+            <input type="number" name="referenceValue"/>
+          </label>
+          <label>
+            Uncertainty
+            <input type="number" name="referenceUncertainty"/>
+          </label>
+          <label>
+            Data
+            <textarea class="referenceData" name="referenceData" onpaste="formatTextareaData(event)" placeholder="paste a column from spreadsheet"></textarea>
+          </label>
+          <button class="removeButton" onclick="removeElement(this)">Remove</button>
+          <hr/>
+        </div>
+        <button onclick="addElement(this)">Add reference</button>
+      </div>
+      <div class="block">
+        <h2>Ranges</h2>
+        <div class="rangeContainer">
+          <label>
+            Mode
+            <select name="rangeMode">
+              <option>relative</option>
+              <option>absolute</option>
+            </select>
+          </label>
+          <label>
+            Min
+            <input type="number" name="rangeMin"/>
+          </label>
+          <label>
+            Max
+            <input type="number" name="rangeMax"/>
+          </label>
+          <label>
+            Coverage factor K
+            <input type="number" name="rangeCoverageFactor"/>
+          </label>
+          <button class="removeButton" onclick="removeElement(this)">Remove</button>
+          <hr/>
+        </div>
+        <button onclick="addElement(this)">Add range</button>
+      </div>
+      <div class="block">
+        <h2>Results</h2>
+        <div id="resultsContainer">
+        </div>
+        <button onclick="calculateResults()">Calculate</button>
+      </div>
+    </div>
+    <hr/>
+    <div id="inputJson">
+      <h3>Request JSON</h3>
+      <div id="inputJsonContent"></div>
+    </div>
+    <div id="outputJson">
+      <h3>Response JSON</h3>
+      <div id="outputJsonContent"></div>
+    </div>
+    <button class="toggleJSONButton" onclick="toggleJSON()">Show / hide JSON</button>
   </body>
 </html>

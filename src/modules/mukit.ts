@@ -67,7 +67,6 @@ export default class MUKit {
     }
     // Multiple reference groups
     const RMSbias = sqrt(bs.reduce((sum, b) => sum + b ** 2, 0) / bs.length)
-    console.log(RMSbias)
     const ucref = mean(
       refs.map(r => {
         switch(mode) {
