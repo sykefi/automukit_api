@@ -8,7 +8,13 @@ You will need node & npm installed in your environment.
 
 ## Installation
 
+    $ cp .env.example .env
     $ npm install
+
+## Configuration (.env file)
+
+    $ SERVER_PORT - The port for the express server
+    $ BASE_URL - The base url for the web UI (used for script and css paths)
 
 ## Running tests
 
@@ -17,6 +23,10 @@ You will need node & npm installed in your environment.
 ## Running in development (watches file changes)
 
     $ npm run dev
+
+## Web UI for development
+
+    Browse to http://localhost:3030 (the number is the SERVER_PORT in the .env file)
 
 ## Running in production (manual build & start)
 
