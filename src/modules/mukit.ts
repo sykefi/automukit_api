@@ -32,10 +32,9 @@ export default class MUKit {
       return { range, errors }
     }
 
-    const stds = this.calculateStds(data, range.mode)
-    const stdMeanData = mean(stds)
+    const pooledStd = this.calculatePooledStd(data, range.mode)
     const stdRefData = this.calculateStdRefData(refs, range.mode)
-    const uRw = sqrt(stdMeanData ** 2 + stdRefData ** 2)
+    const uRw = sqrt(pooledStd ** 2 + stdRefData ** 2)
     const ub = this.calculateUb(refs, stdRefData, range.mode)
 
     const mu = sqrt(uRw ** 2 + ub ** 2)
@@ -49,8 +48,18 @@ export default class MUKit {
     }
   }
 
+  private calculatePooledStd(data: number[][], mode: Mode): number {
+    const stds = this.calculateStds(data, mode)
+    let sum = 0
+    for (let i = 0; i < data.length; i ++) {
+      sum += (data[i].length - 1) * stds[i] ** 2
+    }
+    const sampleCnt = data.reduce((sum, d) => sum + d.length, 0)
+    return sqrt(sum / (sampleCnt - data.length))
+  }
+
   private calculateUb(refs: Reference[], stdRefData: number, mode: Mode): number {
-    const bs = this.calculateBs(refs, mode)
+    const bs = this.calculateBiases(refs, mode)
     if (refs.length === 1) {
       // Only one reference group
       const ref = refs[0]
@@ -63,7 +72,7 @@ export default class MUKit {
         refValUP = ref.uncertainty / ref.value * 100
         break
       }
-      return sqrt(bs[0] ** 2 + (stdRefData / ref.data.length) ** 2 + refValUP ** 2)
+      return sqrt(bs[0] ** 2 + (stdRefData / sqrt(ref.data.length)) ** 2 + refValUP ** 2)
     }
     // Multiple reference groups
     const RMSbias = sqrt(bs.reduce((sum, b) => sum + b ** 2, 0) / bs.length)
@@ -104,7 +113,7 @@ export default class MUKit {
     )
   }
 
-  private calculateBs(refs: Reference[], mode: Mode): number[] {
+  private calculateBiases(refs: Reference[], mode: Mode): number[] {
     switch(mode) {
     case 'absolute':
       return refs.map(ref => abs(mean(ref.data) - ref.value))

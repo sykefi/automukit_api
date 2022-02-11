@@ -62,10 +62,10 @@ describe('POST', () => {
     expect(res.status).toEqual(200)
     expect(res.body).toEqual([
       {
-        uRw: 8.53,
-        ub: 2.0,
-        expandedUncertainty: 17.53,
-        uncertainty: 8.76,
+        uRw: 8.82,
+        ub: 2.67,
+        expandedUncertainty: 18.44,
+        uncertainty: 9.22,
         range: {
           coverageFactor: 2,
           min: 1,
@@ -100,10 +100,10 @@ describe('POST', () => {
     expect(res.status).toEqual(200)
     expect(res.body).toEqual([
       {
-        uRw: 1.57,
-        ub: 1.85,
-        expandedUncertainty: 4.85,
-        uncertainty: 2.42,
+        uRw: 1.61,
+        ub: 1.9,
+        expandedUncertainty: 4.97,
+        uncertainty: 2.49,
         range: {
           coverageFactor: 2,
           min: 0,
@@ -119,10 +119,10 @@ describe('POST', () => {
     expect(res.status).toEqual(200)
     expect(res.body).toEqual([
       {
-        uRw: 5.83,
+        uRw: 5.97,
         ub: 5.25,
-        expandedUncertainty: 15.69,
-        uncertainty: 7.85,
+        expandedUncertainty: 15.9,
+        uncertainty: 7.95,
         range: {
           coverageFactor: 2,
           min: 1,
@@ -138,10 +138,10 @@ describe('POST', () => {
     expect(res.status).toEqual(200)
     expect(res.body).toEqual([
       {
-        uRw: 8.53,
-        ub: 2.00,
-        expandedUncertainty: 17.53,
-        uncertainty: 8.76,
+        uRw: 8.82,
+        ub: 2.67,
+        expandedUncertainty: 18.44,
+        uncertainty: 9.22,
         range: {
           coverageFactor: 2,
           min: 1,
@@ -150,10 +150,10 @@ describe('POST', () => {
         }
       },
       {
-        uRw: 8.67,
-        ub: 2.00,
-        expandedUncertainty: 26.68,
-        uncertainty:  8.89,
+        uRw: 9.38,
+        ub: 2.67,
+        expandedUncertainty: 29.25,
+        uncertainty: 9.75,
         range: {
           coverageFactor: 3,
           min: 10,
