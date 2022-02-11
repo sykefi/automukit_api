@@ -7,15 +7,17 @@ const calculateResults = (url) => {
     body: JSON.stringify(resolveInput())
   }
   document.getElementById('inputJsonContent').innerHTML = JSON.stringify(resolveInput(), null, 2)
+  const container = document.getElementById('resultsContainer')
+  container.innerHTML = 'Loading...'
   fetch(url, config).then(async (response) => {
     const result = await response.json()
-    const container = document.getElementById('resultsContainer')
     document.getElementById('outputJsonContent').innerHTML = JSON.stringify(result, null, 2)
     if (response.ok) {
       if (Array.isArray(result)) {
         handleResult(container, result)
       }
     } else {
+      container.innerHTML = ''
       appendErrors(container, result.errors)
     }
   })
@@ -86,9 +88,9 @@ const parseData = (value) => {
   const data = []
   const rows = value.split("\n")
   for (const row of rows) {
-    data.push(row.split(/[ \t]+/).map(d => parseFloat(d)).filter(d => d !== null))
+    data.push(row.split(/[ \t]+/).map(d => parseFloat(d)).filter(d => !isNaN(d)))
   }
-  return data.filter(d => d !== null)
+  return data.filter(d => d.length > 0)
 }
 
 const parseReferenceData = (value) => {
@@ -97,7 +99,7 @@ const parseReferenceData = (value) => {
   for (const row of rows) {
     data.push(parseFloat(row))
   }
-  return data.filter(d => d !== null)
+  return data.filter(d => !isNaN(d))
 }
 
 const appendErrors = (container, errors) => {
