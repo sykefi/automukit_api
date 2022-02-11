@@ -3,10 +3,12 @@ import Validator from './validator'
 import { Range, Input, Result, Reference, Mode } from '../types'
 
 export default class MUKit {
-  private input: Input
+  private readonly input: Input
+  private readonly precision: number
 
-  constructor(input: Input) {
+  constructor(input: Input, precision: number) {
     this.input = input
+    this.precision = precision
   }
 
   calculateResult(range: Range): Result {
@@ -41,10 +43,10 @@ export default class MUKit {
 
     return {
       range,
-      uRw: round(uRw, 2),
-      ub: round(ub, 2),
-      uncertainty: round(mu, 2),
-      expandedUncertainty: round(mu * range.coverageFactor, 2)
+      uRw: round(uRw, this.precision),
+      ub: round(ub, this.precision),
+      uncertainty: round(mu, this.precision),
+      expandedUncertainty: round(mu * range.coverageFactor, this.precision)
     }
   }
 

@@ -51,7 +51,8 @@ export default class Server {
       const results = []
       try {
         const input = req.body as Input
-        const mukit = new MUKit(input)
+        const precision = process.env.PRECISION !== undefined ? parseInt(process.env.PRECISION, 10) : 0
+        const mukit = new MUKit(input, process.env.NODE_ENV === 'test' ? 2 : precision)
         for (const range of input.ranges) {
           results.push(mukit.calculateResult(range))
         }
