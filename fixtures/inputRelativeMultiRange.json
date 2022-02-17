@@ -1,5 +1,5 @@
 {
-  "data": [
+  "replicateSamples": [
     [11.62458250418590, 13.90604262182990],
     [11.38798664013390, 11.24071778597910],
     [11.07413498373850, 11.16185249796180],
@@ -36,7 +36,7 @@
     {
       "value": 20.0,
       "uncertainty": 0.2,
-      "data": [
+      "controlSamples": [
         19.7380501959272,
         19.8273772058243,
         19.1377083095912,
@@ -67,19 +67,33 @@
       "mode": "relative",
       "min": 1,
       "max": 20,
-      "coverageFactor": 2
+      "coverageFactor": 2,
+      "replicateSamplesMin": 1,
+      "controlSamplesMin": 1
     },
     {
       "mode": "relative",
       "min": 10,
       "max": 20,
-      "coverageFactor": 3
+      "coverageFactor": 3,
+      "replicateSamplesMin": 1,
+      "controlSamplesMin": 1
     },
     {
       "mode": "relative",
       "min": 100,
       "max": 200,
-      "coverageFactor": 3
+      "coverageFactor": 3,
+      "replicateSamplesMin": 1,
+      "controlSamplesMin": 1
+    },
+    {
+      "mode": "relative",
+      "min": 1,
+      "max": 20,
+      "coverageFactor": 1,
+      "replicateSamplesMin": 100,
+      "controlSamplesMin": 100
     }
   ]
 }

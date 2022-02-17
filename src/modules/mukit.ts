@@ -18,23 +18,28 @@ export default class MUKit {
       return { range, errors }
     }
 
-    const data = this.resolveData(range)
+    const replicateSamples = this.resolveReplicateSamples(range)
     const refs = this.resolveReferences(range)
 
-    if (data.length === 0) {
-      errors.push('Empty data')
+    if (replicateSamples.length < range.replicateSamplesMin) {
+      errors.push(`Not enough replicate samples: ${replicateSamples.length} / ${range.replicateSamplesMin}`)
     }
 
     if (refs.length === 0) {
-      errors.push('Empty references')
+      errors.push('Suitable reference groups not found')
+    } else {
+      const controlSamplesCnt = refs.reduce((sum, ref) => ref.controlSamples.length + sum, 0)
+      if (controlSamplesCnt < range.controlSamplesMin) {
+        errors.push(`Not enough control samples: ${controlSamplesCnt} / ${range.controlSamplesMin}`)
+      }
     }
 
-    // Cannot calculate anything without data AND references
+    // Cannot calculate anything without enough replicateSamples or controlSamples
     if (errors.length > 0) {
       return { range, errors }
     }
 
-    const pooledStd = this.calculatePooledStd(data, range.mode)
+    const pooledStd = this.calculatePooledStd(replicateSamples, range.mode)
     const stdRefData = this.calculateStdRefData(refs, range.mode)
     const uRw = sqrt(pooledStd ** 2 + stdRefData ** 2)
     const ub = this.calculateUb(refs, stdRefData, range.mode)
@@ -74,7 +79,7 @@ export default class MUKit {
         refValUP = ref.uncertainty / ref.value * 100
         break
       }
-      return sqrt(bs[0] ** 2 + (stdRefData / sqrt(ref.data.length)) ** 2 + refValUP ** 2)
+      return sqrt(bs[0] ** 2 + (stdRefData / sqrt(ref.controlSamples.length)) ** 2 + refValUP ** 2)
     }
     // Multiple reference groups
     const RMSbias = sqrt(bs.reduce((sum, b) => sum + b ** 2, 0) / bs.length)
@@ -94,9 +99,9 @@ export default class MUKit {
   private calculateStdRefData(refs: Reference[], mode: Mode): number {
     switch(mode) {
     case 'absolute':
-      return std(refs[0].data)
+      return std(refs[0].controlSamples)
     case 'relative':
-      return std(refs[0].data) / mean(refs[0].data) * 100
+      return std(refs[0].controlSamples) / mean(refs[0].controlSamples) * 100
     }
   }
 
@@ -105,12 +110,12 @@ export default class MUKit {
     return this.input.references.filter(ref =>
       ref.value >= range.min && ref.value <= range.max
     ).sort((a, b) =>
-      b.data.length - a.data.length
+      b.controlSamples.length - a.controlSamples.length
     )
   }
 
-  private resolveData(range: Range): number[][] {
-    return this.input.data.filter(values =>
+  private resolveReplicateSamples(range: Range): number[][] {
+    return this.input.replicateSamples.filter(values =>
       values.some(v => v >= range.min && v <= range.max)
     )
   }
@@ -118,9 +123,9 @@ export default class MUKit {
   private calculateBiases(refs: Reference[], mode: Mode): number[] {
     switch(mode) {
     case 'absolute':
-      return refs.map(ref => abs(mean(ref.data) - ref.value))
+      return refs.map(ref => abs(mean(ref.controlSamples) - ref.value))
     case 'relative':
-      return refs.map(ref => abs(100 * (mean(ref.data) - ref.value) / ref.value))
+      return refs.map(ref => abs(100 * (mean(ref.controlSamples) - ref.value) / ref.value))
     }
   }
 

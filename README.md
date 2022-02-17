@@ -13,8 +13,9 @@ You will need node & npm installed in your environment.
 
 ## Configuration (.env file)
 
-    $ SERVER_PORT - The port for the express server
-    $ BASE_URL - The base url for the web UI (used for script and css paths)
+    SERVER_PORT - The port for the express server
+    BASE_URL - The base url for the web UI (used for script and css paths)
+    PRECISION - The max precision in digits (amount of decimals) for result numbers
 
 ## Running tests
 

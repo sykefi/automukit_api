@@ -32,24 +32,24 @@ describe('POST', () => {
   it('should return 400 if input has invalid format', async () => {
     // Make deep clone
     const invalidInput = JSON.parse(JSON.stringify(validInput))
-    invalidInput.data = ''
+    invalidInput.replicateSamples = ''
     invalidInput.references[0].uncertainty = undefined
     invalidInput.ranges[0].coverageFactor = null
     const res = await request.post('/').send(invalidInput).type('application/json')
     expect(res.status).toEqual(400)
     expect(res.body).toEqual({
       errors: [
-        '"data" is not an array',
+        '"replicateSamples" is not an array',
         '"uncertainty" is missing from reference',
         '"coverageFactor" is missing from range'
       ]
     })
   })
 
-  it('should return 422 if input has invalid data', async () => {
+  it('should return 422 if input has NaN samples', async () => {
     // Make deep clone
     const invalidInput = JSON.parse(JSON.stringify(validInput))
-    invalidInput.data = [[10.0, 'yyy', 'xxx']]
+    invalidInput.replicateSamples = [[10.0, 'yyy', 'xxx']]
     const res = await request.post('/').send(invalidInput).type('application/json')
     expect(res.status).toEqual(422)
     expect(res.body).toEqual({
@@ -70,7 +70,9 @@ describe('POST', () => {
           coverageFactor: 2,
           min: 1,
           max: 20,
-          mode: 'relative'
+          mode: 'relative',
+          replicateSamplesMin: 1,
+          controlSamplesMin: 1
         }
       }
     ])
@@ -80,16 +82,22 @@ describe('POST', () => {
     // Make deep clone
     const invalidInput = JSON.parse(JSON.stringify(validInput))
     invalidInput.ranges[0].coverageFactor = 'xxx'
+    invalidInput.ranges[0].controlSamplesMin = -2
     const res = await request.post('/').send(invalidInput).type('application/json')
     expect(res.status).toEqual(200)
     expect(res.body).toEqual([
       {
-        errors: ['Range "coverageFactor" is not a number'],
+        errors: [
+          'Range "coverageFactor" is not a number > 0',
+          'Range "controlSamplesMin" is not a number > 0'
+        ],
         range: {
           coverageFactor: 'xxx',
           min: 1,
           max: 20,
-          mode: 'relative'
+          mode: 'relative',
+          replicateSamplesMin: 1,
+          controlSamplesMin: -2
         }
       }
     ])
@@ -108,7 +116,9 @@ describe('POST', () => {
           coverageFactor: 2,
           min: 0,
           max: 100,
-          mode: 'absolute'
+          mode: 'absolute',
+          replicateSamplesMin: 1,
+          controlSamplesMin: 1
         }
       }
     ])
@@ -127,7 +137,9 @@ describe('POST', () => {
           coverageFactor: 2,
           min: 1,
           max: 100,
-          mode: 'relative'
+          mode: 'relative',
+          replicateSamplesMin: 1,
+          controlSamplesMin: 1
         }
       }
     ])
@@ -146,7 +158,9 @@ describe('POST', () => {
           coverageFactor: 2,
           min: 1,
           max: 20,
-          mode: 'relative'
+          mode: 'relative',
+          replicateSamplesMin: 1,
+          controlSamplesMin: 1
         }
       },
       {
@@ -158,16 +172,31 @@ describe('POST', () => {
           coverageFactor: 3,
           min: 10,
           max: 20,
-          mode: 'relative'
+          mode: 'relative',
+          replicateSamplesMin: 1,
+          controlSamplesMin: 1
         }
       },
       {
-        errors: ['Empty data', 'Empty references'],
+        errors: ['Not enough replicate samples: 0 / 1', 'Suitable reference groups not found'],
         range: {
           coverageFactor: 3,
           min: 100,
           max: 200,
-          mode: 'relative'
+          mode: 'relative',
+          replicateSamplesMin: 1,
+          controlSamplesMin: 1
+        }
+      },
+      {
+        errors: ['Not enough replicate samples: 31 / 100', 'Not enough control samples: 22 / 100'],
+        range: {
+          coverageFactor: 1,
+          min: 1,
+          max: 20,
+          mode: 'relative',
+          replicateSamplesMin: 100,
+          controlSamplesMin: 100
         }
       }
     ])

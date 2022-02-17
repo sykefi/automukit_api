@@ -5,16 +5,18 @@ export interface Range {
   min: number
   max: number
   coverageFactor: number
+  replicateSamplesMin: number
+  controlSamplesMin: number
 }
 
 export interface Reference {
   value: number
   uncertainty: number
-  data: number[]
+  controlSamples: number[]
 }
 
 export interface Input {
-  data: number[][]
+  replicateSamples: number[][]
   references: Reference[]
   ranges: Range[]
 }

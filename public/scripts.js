@@ -27,14 +27,17 @@ const handleResult = (container, result) => {
   const resultElements = result.map(r => {
     const element = document.createElement('div')
     let output = {
-      'range mode': r.range.mode,
-      'range min': r.range.min,
-      'range max': r.range.max,
-      'range K': r.range.coverageFactor,
+      'Mode': r.range.mode,
+      'Min value': r.range.min,
+      'Max value': r.range.max,
+      'Coverage factor K': r.range.coverageFactor,
+      'Replicate samples min': r.range.replicateSamplesMin,
+      'Control samples min': r.range.controlSamplesMin
     }
     const rangeElement = document.createElement('div')
     rangeElement.className = 'rangeValues'
-    rangeElement.innerHTML = Object.keys(output).map(k => `${k}: ${output[k]}`).join("<br/>")
+    rangeElement.innerHTML = '<b>Range</b><br/>' +
+        Object.keys(output).map(k => `${k}: ${output[k]}`).join("<br/>")
     element.appendChild(rangeElement)
     if (r.uRw) {
       const resultElement = document.createElement('div')
@@ -57,12 +60,12 @@ const handleResult = (container, result) => {
 }
 
 const resolveInput = () => {
-  let data = parseData(document.getElementById('measurementData').value)
+  let replicateSamples = parseData(document.getElementById('measurementData').value)
   let references = Array.from(document.getElementsByClassName('referenceContainer')).map(r => {
     return {
       value: getFloatValue(r, 'referenceValue'),
       uncertainty: getFloatValue(r, 'referenceUncertainty'),
-      data: parseReferenceData(r.querySelectorAll('[name=referenceData]')[0].value)
+      controlSamples: parseReferenceData(r.querySelectorAll('[name=referenceData]')[0].value)
     }
   })
   let ranges = Array.from(document.getElementsByClassName('rangeContainer')).map(r => {
@@ -70,11 +73,13 @@ const resolveInput = () => {
       mode: r.querySelectorAll('[name=rangeMode]')[0].value,
       min: getFloatValue(r, 'rangeMin'),
       max: getFloatValue(r, 'rangeMax'),
-      coverageFactor: getFloatValue(r, 'rangeCoverageFactor')
+      coverageFactor: getFloatValue(r, 'rangeCoverageFactor'),
+      replicateSamplesMin: getFloatValue(r, 'replicateSamplesMin'),
+      controlSamplesMin: getFloatValue(r, 'controlSamplesMin')
     }
   })
   return {
-    data,
+    replicateSamples,
     references,
     ranges
   }

@@ -10,7 +10,7 @@ h1 AutoMUKit web user interface
   .block
     h2 Measurements
     label
-      | Data
+      | Replicate samples
       textarea#measurementData(onpaste='formatTextareaData(event)' placeholder='paste columns from spreadsheet')
   .block
     h2 References
@@ -22,8 +22,12 @@ h1 AutoMUKit web user interface
         | Uncertainty
         input(type='number' name='referenceUncertainty')
       label
-        | Data
-        textarea.referenceData(name='referenceData' onpaste='formatTextareaData(event)' placeholder='paste a column from spreadsheet')
+        | Control samples
+        textarea.referenceData(
+          name='referenceData'
+          onpaste='formatTextareaData(event)'
+          placeholder='paste a column from spreadsheet'
+        )
       button.removeButton(onclick='removeElement(this)') Remove
       hr
     button(onclick='addElement(this)') Add reference
@@ -36,14 +40,20 @@ h1 AutoMUKit web user interface
           option relative
           option absolute
       label
-        | Min
+        | Min value
         input(type='number' name='rangeMin')
       label
-        | Max
+        | Max value
         input(type='number' name='rangeMax')
       label
         | Coverage factor K
         input(type='number' name='rangeCoverageFactor')
+      label
+        | Replicate samples min amount
+        input(type='number' name='replicateSamplesMin')
+      label
+        | Control samples min amount
+        input(type='number' name='controlSamplesMin')
       button.removeButton(onclick='removeElement(this)') Remove
       hr
     button(onclick='addElement(this)') Add range
