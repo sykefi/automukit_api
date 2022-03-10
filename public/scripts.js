@@ -27,12 +27,12 @@ const handleResult = (container, result) => {
   const resultElements = result.map(r => {
     const element = document.createElement('div')
     let output = {
-      'Mode': r.range.mode,
-      'Min value': r.range.min,
-      'Max value': r.range.max,
-      'Coverage factor K': r.range.coverageFactor,
-      'Replicate samples min': r.range.replicateSamplesMin,
-      'Control samples min': r.range.controlSamplesMin
+      'Calculation mode': r.range.mode,
+      'Minimum value': r.range.min,
+      'Maximum value': r.range.max,
+      'Coverage factor k': r.range.coverageFactor,
+      'Minimum amount of replicate series': r.range.replicateSamplesMin,
+      'Minimum amount of CRM results': r.range.controlSamplesMin
     }
     const rangeElement = document.createElement('div')
     rangeElement.className = 'rangeValues'
@@ -42,10 +42,10 @@ const handleResult = (container, result) => {
     if (r.uRw) {
       const resultElement = document.createElement('div')
       const output = {
-        'uRw': r.uRw,
-        'ub': r.ub,
-        'uncertainty': r.uncertainty,
-        'expanded uncertainty': r.expandedUncertainty
+        'Within-laboratory reproducibility, u(Rw)': r.uRw,
+        'Method and laboratory bias, u(bias)': r.ub,
+        'Combined standard uncertainty, uc': r.uncertainty,
+        'Expanded uncertainty, U': r.expandedUncertainty
       }
       resultElement.innerHTML = Object.keys(output).map(k => `${k}: ${output[k]}`).join("<br/>")
       resultElement.className = 'resultValues'
@@ -129,10 +129,20 @@ const formatTextareaData = (event) => {
 
 const addElement = (element) => {
   const parent = element.parentElement
-  const div = parent.getElementsByTagName('div')[0]
+  const div = parent.getElementsByClassName('subBlock')[0]
   const clone = div.cloneNode(true)
+  let elements = clone.getElementsByClassName('popuptext')
+  for (const element of elements) {
+    element.id = null
+  }
+  elements = clone.getElementsByClassName('helpToggle')
+  for (const element of elements) {
+    element.style.display = 'none'
+  }
   const button = clone.getElementsByClassName('removeButton')[0]
-  button.style.display = 'block'
+  if (button) {
+    button.style.display = 'block'
+  }
   element.insertAdjacentElement('beforebegin', clone)
 }
 
@@ -146,4 +156,24 @@ const toggleJSON = () => {
   const output = document.getElementById('outputJson')
   input.style.display = input.style.display === 'block' ? 'none' : 'block'
   output.style.display = output.style.display === 'block' ? 'none' : 'block'
+}
+
+const togglePopup = (event, id) => {
+  const elements = document.getElementsByClassName('popuptext')
+  for (const element of elements) {
+    if (element.id !== id) {
+      element.classList.remove('show')
+    }
+  }
+  const element = document.getElementById(id)
+  element.classList.toggle('show')
+  event.stopPropagation()
+  event.preventDefault()
+}
+
+const closePopups = () => {
+  const elements = document.getElementsByClassName('popuptext')
+  for (const element of elements) {
+    element.classList.remove('show')
+  }
 }

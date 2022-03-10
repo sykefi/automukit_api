@@ -26,7 +26,7 @@ export default class Server {
     app.use(express.json())
     app.set('view engine', 'pug')
     app.get('/', function (req, res) {
-      console.log(`${date.toJSON()} - Processing GET request from ${req.headers.referer}`)
+      console.log(`${date.toJSON()} - Processing GET request from ${req.headers.host}`)
       res.render('index', { baseUrl: process.env.BASE_URL })
     })
     app.use(express.static('public'))

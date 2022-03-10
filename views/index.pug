@@ -5,24 +5,31 @@ head
   title AutoMUKit API testing WUI
   link(rel='stylesheet' href=`${baseUrl !== '/' ? baseUrl : ''}/styles.css`)
   script(src=`${baseUrl !== '/' ? baseUrl : ''}/scripts.js` type='application/javascript')
+body(onclick="closePopups()")
 h1 AutoMUKit web user interface
 #container
   .block
-    h2 Measurements
+    h2 Routine replicate samples
     label
-      | Replicate samples
+      | &nbsp;
       textarea#measurementData(onpaste='formatTextareaData(event)' placeholder='paste columns from spreadsheet')
   .block
-    h2 References
-    .referenceContainer
-      label
-        | Value
+    h2 Certified reference materials
+    .subBlock.referenceContainer
+      label.popup
+        | Certified concentration
+        div.helpToggle(onclick='togglePopup(event, "popup21")') ?
+        div#popup21.popuptext.bottom
+          | The value from the certificate or the theoretical concentration for the certified reference material.
         input(type='number' name='referenceValue')
-      label
-        | Uncertainty
+      label.popup
+        | Standard uncertainty of certified concentration
+        div.helpToggle(onclick='togglePopup(event, "popup22")') ?
+        div#popup22.popuptext.bottom
+          | The uncertainty of the certified value is calculated from the confidence interval given in the certificate. For example if the CRM certificate shows 11.5 +- 0.5 µg/l (95 %, k=2) then u(Cref) = 0.5 µg/l / 2 = 0.25 µg/l = 2.17 %. If the control sample is not certified but its uncertainty can be solved from how it was prepared, the control sample can be used instead of the CRM.
         input(type='number' name='referenceUncertainty')
       label
-        | Control samples
+        | CRM
         textarea.referenceData(
           name='referenceData'
           onpaste='formatTextareaData(event)'
@@ -30,29 +37,45 @@ h1 AutoMUKit web user interface
         )
       button.removeButton(onclick='removeElement(this)') Remove
       hr
-    button(onclick='addElement(this)') Add reference
+    button(onclick='addElement(this)') Add CRM
   .block
-    h2 Ranges
-    .rangeContainer
-      label
-        | Mode
+    h2.popup Concentration ranges
+      div.helpToggle(onclick='togglePopup(event, "popup31")') ?
+      div#popup31.popuptext.bottom
+        | Normally the measurement uncertainty is changing depending on the concentration. Therefore, it is recommended to divide the measurement range so that the absolute or relative uncertainty remains close to constant for each range.
+    .subBlock.rangeContainer
+      label.popup
+        | Calculation mode
+        div.helpToggle(onclick='togglePopup(event, "popup32")') ?
+        div#popup32.popuptext.bottom
+          img(src=`${baseUrl !== '/' ? baseUrl : ''}/calc_mode.png`)
+          | Relationship between (a) absolute measurement uncertainty and concentration, and (b) relative measurement uncertainty and concentration. Division of the measurement range (c) at the dashed line into a low range where the absolute measurement uncertainty is constant and a high range where the relative measurement uncertainty is approximately constant.
         select(name='rangeMode')
-          option relative
-          option absolute
+          option(value="relative") Relative uncertainty
+          option(value="absolute") Absolute uncertainty
       label
-        | Min value
+        | Minimum value
         input(type='number' name='rangeMin')
       label
-        | Max value
+        | Maximum value
         input(type='number' name='rangeMax')
-      label
-        | Coverage factor K
+      label.popup
+        | Coverage factor k
+        div.helpToggle(onclick='togglePopup(event, "popup33")') ?
+        div#popup33.popuptext
+          | Measurement uncertainty should normally be expressed as U, the expanded measurement uncertainty, with a stated confidence level and a coverage factor, k. In most cases k = 2, providing a level of confidence of approximately 95 %
         input(type='number' name='rangeCoverageFactor')
-      label
-        | Replicate samples min amount
+      label.popup
+        | Minimum amount of replicate series
+        div.helpToggle(onclick='togglePopup(event, "popup34")') ?
+        div#popup34.popuptext
+          | In order to have a representative basis for the uncertainty estimation the number of results should ideally be more than 60.
         input(type='number' name='replicateSamplesMin')
-      label
-        | Control samples min amount
+      label.popup
+        | Minimum amount of CRM results
+        div.helpToggle(onclick='togglePopup(event, "popup35")') ?
+        div#popup35.popuptext
+          | Regular measurement of one or several CRM can be used to estimate the bias. Each reference material should be measured on 5 different analytical series before the values are used.
         input(type='number' name='controlSamplesMin')
       button.removeButton(onclick='removeElement(this)') Remove
       hr
