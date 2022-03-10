@@ -37,7 +37,7 @@ You will need node & npm installed in your environment.
 
 ## Web user interface
 
-  For development, browse to http://localhost:3040
+  For development, browse to http://localhost:3040   
   *  Port can be changed by defining the SERVER_PORT in the .env file
 
 ## API
@@ -137,7 +137,7 @@ Normally the measurement uncertainty is changing depending on the concentration.
 
 #### Calculation mode
 
-<img alt="Calculation mode" src="public/calc_mode.png" width="300"/>
+![Calculation mode](public/calc_mode.png)
 
 Relationship between (a) absolute measurement uncertainty and concentration, and (b) relative measurement uncertainty and concentration. Division of the measurement range (c) at the dashed line into a low range where the absolute measurement uncertainty is constant and a high range where the relative measurement uncertainty is approximately constant.
 
