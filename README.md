@@ -47,68 +47,62 @@ AutoMUKit API only has one endpoint which can be accessed using the url path roo
 ### POST request JSON format
     
     {
-      "replicateSamples": [[number]],
-      "references": [
-        {
-          "value": number,
-          "uncertainty": number,
-          "controlSamples": [number]
-        }
-      ],
-      "ranges": [
-        {
-          "mode": "relative" | "absolute",
-          "min": number,
-          "max": number,
-          "coverageFactor": number,
-          "replicateSamplesMin": number,
-          "controlSamplesMin": number
-        }
-      ]
+        replicateSamples: number[][],
+        references: {
+            value: number,
+            uncertainty: number,
+            controlSamples: [number]
+        }[],
+        ranges: {
+            mode: "relative" | "absolute",
+            min: number,
+            max: number,
+            coverageFactor: number,
+            replicateSamplesMin: number,
+            controlSamplesMin: number
+        }[]
     }
 
 #### Attribute descriptions
 
 * `replicateSamples`: Routine replicate samples
 * `references`: Certified reference materials
-  * `value`: Certified concentration
-  * `uncertainty`: Standard uncertainty of certified concentration
-  * `controlSamples`: CRM
+    * `value`: Certified concentration
+    * `uncertainty`: Standard uncertainty of certified concentration
+    * `controlSamples`: CRM
 * `ranges`: Concentration ranges
-  * `mode`: Calculation mode
-  * `min`: Minimum value
-  * `max`: Maximum value
-  * `coverageFactor`: Coverage factor k
-  * `replicateSamplesMin`: Minimum amount of replicate series
-  * `controlSamplesMin`: Minimum amount of CRM results
+    * `mode`: Calculation mode
+    * `min`: Minimum value
+    * `max`: Maximum value
+    * `coverageFactor`: Coverage factor k
+    * `replicateSamplesMin`: Minimum amount of replicate series
+    * `controlSamplesMin`: Minimum amount of CRM results
 
 ### POST response JSON format (not ok status)
 The run could not be completed: API returns status code 400 if request format validation fails or 422 if the calculation fails because of an program error.   
 
     {
-      "errors": [string]
+        errors: string[]
     }
 
 ### POST response JSON format (ok status)
 Successful run responds with array of results (one result object per concentration range). The result contains only `range` and `errors` attributes if the calculation for a range couldn't be completed. For successful calculation only the `range`, `uRw`, `ub`, `uncertainty` and `expandedUncertainty` attributes will be present.
 
-    [
-      {
-        "range": {
-          "mode": "relative" | "absolute",
-          "min": number,
-          "max": number,
-          "coverageFactor": number,
-          "replicateSamplesMin": number,
-          "controlSamplesMin": number
+    {
+        range: {
+            mode: "relative" | "absolute",
+            min: number,
+            max: number,
+            coverageFactor: number,
+            replicateSamplesMin: number,
+            controlSamplesMin: number
         },           
-        "uRw": number | undefined,
-        "ub": number | undefined,
-        "uncertainty": number | undefined,
-        "expandedUncertainty": number | undefined
-        "errors": [string] | undefined
-      }
-    ]
+        uRw?: number,
+        ub?: number,
+        uncertainty?: number,
+        expandedUncertainty?: number
+        errors?: string[]
+    }[]
     
 #### Attribute descriptions
 
@@ -143,7 +137,7 @@ Normally the measurement uncertainty is changing depending on the concentration.
 
 #### Calculation mode
 
-![Calculation mode](public/calc_mode.png)
+<img alt="Calculation mode" src="public/calc_mode.png" width="300"/>
 
 Relationship between (a) absolute measurement uncertainty and concentration, and (b) relative measurement uncertainty and concentration. Division of the measurement range (c) at the dashed line into a low range where the absolute measurement uncertainty is constant and a high range where the relative measurement uncertainty is approximately constant.
 
