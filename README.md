@@ -3,32 +3,54 @@
 
 ---
 
+## Running with Docker
+
+### Configuration
+
+See _Configuration_ main chapter for more info
+
+    $ cp .env.example .env
+
+### Build the image
+
+    $ docker build . -t automukit_api
+
+### Run the app
+
+    $ docker run -it -p 3040:3040 automukit_api
+
 ## Running without Docker
 
 ### Requirements
 
 You will need node & npm installed in your environment.
 
-### Installation
+### Configuration and installation
+
+See _Configuration_ main chapter for more info
 
     $ cp .env.example .env
     $ npm install
 
-### In development (watches file changes)
+### Run in development (watches file changes)
 
     $ npm run dev
 
-### In production (manual build & start)
+### Run in production (manual build & start)
 
     $ npm run build
     $ npm start
 
-### In production (using flock and cron)
+### Run in production (using flock and cron)
+
+This is a very simple way of keeping the API running on Linux. If the process dies then cron will restart it within a minute.
 
     $ crontab -e
     * * * * *       cd /path/to/automukit_api && ./start.sh 
 
-## Configuration (.env file)
+## Configuration
+
+Following settings can be configured using the .env file or environmental variables
 
     SERVER_PORT - The port number for the express server
     BASE_URL - The base url string for the web UI (used for script and css paths)
@@ -37,8 +59,7 @@ You will need node & npm installed in your environment.
 
 ## Web user interface
 
-  For development, browse to http://localhost:3040   
-  *  Port can be changed by defining the SERVER_PORT in the .env file
+  For local installation, browse to http://localhost:3040
 
 ## API
 
@@ -51,7 +72,7 @@ AutoMUKit API only has one endpoint which can be accessed using the url path roo
         references: {
             value: number,
             uncertainty: number,
-            controlSamples: [number]
+            controlSamples: number[]
         }[],
         ranges: {
             mode: "relative" | "absolute",
@@ -68,7 +89,7 @@ AutoMUKit API only has one endpoint which can be accessed using the url path roo
 * `replicateSamples`: Routine replicate samples
 * `references`: Certified reference materials
     * `value`: Certified concentration
-    * `uncertainty`: Standard uncertainty of certified concentration
+    * `uncertainty`: Standard uncertainty of certified concentration as absolute value
     * `controlSamples`: CRM
 * `ranges`: Concentration ranges
     * `mode`: Calculation mode

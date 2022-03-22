@@ -47,7 +47,8 @@ const handleResult = (container, result) => {
         'Combined standard uncertainty, uc': r.uncertainty,
         'Expanded uncertainty, U': r.expandedUncertainty
       }
-      resultElement.innerHTML = Object.keys(output).map(k => `${k}: ${output[k]}`).join("<br/>")
+      const postfix = r.range.mode === 'relative' ? ' %' : ''
+      resultElement.innerHTML = Object.keys(output).map(k => `${k}: ${output[k]}${postfix}`).join("<br/>")
       resultElement.className = 'resultValues'
       element.appendChild(resultElement)
     }
@@ -64,7 +65,7 @@ const resolveInput = () => {
   let references = Array.from(document.getElementsByClassName('referenceContainer')).map(r => {
     return {
       value: getFloatValue(r, 'referenceValue'),
-      uncertainty: getFloatValue(r, 'referenceUncertainty'),
+      uncertainty: resolveReferenceUncertainty(r),
       controlSamples: parseReferenceData(r.querySelectorAll('[name=referenceData]')[0].value)
     }
   })
@@ -175,5 +176,16 @@ const closePopups = () => {
   const elements = document.getElementsByClassName('popuptext')
   for (const element of elements) {
     element.classList.remove('show')
+  }
+}
+
+const resolveReferenceUncertainty = (parent) => {
+  const value = getFloatValue(parent, 'referenceValue')
+  const uncertainty = getFloatValue(parent, 'referenceUncertainty')
+  const type = parent.querySelectorAll('[name=referenceUncertaintyType]')[0].value
+  if (type === 'relative') {
+    return value * (uncertainty / 100)
+  } else {
+    return uncertainty
   }
 }

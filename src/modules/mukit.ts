@@ -83,16 +83,14 @@ export default class MUKit {
     }
     // Multiple reference groups
     const RMSbias = sqrt(bs.reduce((sum, b) => sum + b ** 2, 0) / bs.length)
-    const ucref = mean(
-      refs.map(r => {
-        switch(mode) {
-        case 'absolute':
-          return r.uncertainty
-        case 'relative':
-          return r.uncertainty / r.value * 100
-        }
-      })
-    )
+    const ucref = mean(refs.map(ref => {
+      switch(mode) {
+      case 'absolute':
+        return ref.uncertainty
+      case 'relative':
+        return ref.uncertainty / ref.value * 100
+      }
+    }))
     return sqrt(RMSbias ** 2 + ucref ** 2)
   }
 

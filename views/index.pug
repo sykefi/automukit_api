@@ -10,11 +10,27 @@ h1 AutoMUKit web user interface
 #container
   .block
     h2 Routine replicate samples
-    label
+    label.popup
+      div.helpToggle(onclick='togglePopup(event, "popup11")') ?
+      div#popup11.popuptext
+        | Input replicate sample groups as rows. Sample values must be separated with spaces or tabs.
+        br
+        br
+        i &lt;group1 value1&gt;
+        | &nbsp;&nbsp;
+        i &lt;group1 value2&gt;
+        | &nbsp;&nbsp;...
+        br
+        i &lt;group2 value1&gt;
+        | &nbsp;&nbsp;
+        i &lt;group2 value2&gt;
+        | &nbsp;&nbsp;...
+        br
+        | ...
       | &nbsp;
-      textarea#measurementData(onpaste='formatTextareaData(event)' placeholder='paste columns from spreadsheet')
+    textarea#measurementData(onpaste='formatTextareaData(event)' placeholder='paste columns from spreadsheet')
   .block
-    h2 Certified reference materials
+    h2 Reference materials
     .subBlock.referenceContainer
       label.popup
         | Certified concentration
@@ -26,10 +42,25 @@ h1 AutoMUKit web user interface
         | Standard uncertainty of certified concentration
         div.helpToggle(onclick='togglePopup(event, "popup22")') ?
         div#popup22.popuptext.bottom
-          | The uncertainty of the certified value is calculated from the confidence interval given in the certificate. For example if the CRM certificate shows 11.5 +- 0.5 µg/l (95 %, k=2) then u(Cref) = 0.5 µg/l / 2 = 0.25 µg/l = 2.17 %. If the control sample is not certified but its uncertainty can be solved from how it was prepared, the control sample can be used instead of the CRM.
-        input(type='number' name='referenceUncertainty')
-      label
+          | The uncertainty of the certified value is calculated from the confidence interval given in the certificate. For example if the CRM certificate shows 11.5 +- 0.5 µg/l (95 %, k=2) then u(Cref) = 0.5 µg/l / 2 = 0.25 µg/l = 2.17 %. If the control sample is not certified but its uncertainty can be solved from how it was prepared, the control sample can be used instead of the CRM. The uncertainty value can be given as absolute or percetange number (100 = 100% of Certified concentration).
+        div
+          input(type='number' name='referenceUncertainty' style='display: inline-block;')
+          span(style='margin-left: 0.5em; margin-right: 0.25em;') type:
+          select(name='referenceUncertaintyType' style='display: inline-block;')
+            option(value="absolute") Absolute
+            option(value="relative") Percentage
+      label.popup
         | CRM
+        div.helpToggle(onclick='togglePopup(event, "popup23")') ?
+        div#popup23.popuptext(style='bottom: 105%;')
+          | Input CRM samples as a column. Sample values must be separated with newlines.
+          br
+          br
+          i &lt;value1&gt;
+          br
+          i &lt;value2&gt;
+          br
+          | ...
         textarea.referenceData(
           name='referenceData'
           onpaste='formatTextareaData(event)'
