@@ -76,7 +76,7 @@ export default class MUKit {
         refValUP = ref.uncertainty
         break
       case 'relative':
-        refValUP = ref.uncertainty / ref.value * 100
+        refValUP = ref.value !== 0 ? ref.uncertainty / ref.value * 100 : 0
         break
       }
       return sqrt(bs[0] ** 2 + (stdRefData / sqrt(ref.controlSamples.length)) ** 2 + refValUP ** 2)
@@ -88,7 +88,7 @@ export default class MUKit {
       case 'absolute':
         return ref.uncertainty
       case 'relative':
-        return ref.uncertainty / ref.value * 100
+        return ref.value !== 0 ? ref.uncertainty / ref.value * 100 : 0
       }
     }))
     return sqrt(RMSbias ** 2 + ucref ** 2)
